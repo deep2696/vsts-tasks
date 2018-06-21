@@ -1,0 +1,40 @@
+{
+    "id": "86ef3000-7478-11e8-859c-bb0ca3d3c205",
+    "name": "GenerateArtifactMetadata",
+    "friendlyName": "Generate Artifact Metadata",
+    "description": "Generates(or overwrites) a .csv file containing the hashes of the files present in the artifact to be downloaded.",
+    "helpMarkDown": "",
+    "category": "Utility",
+	"visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Microsoft Corporation",
+    "version": {
+      "Major": 0,
+      "Minor": 1,
+      "Patch": 5
+    },
+    "groups": [],
+    "demands": [],
+	"preview": "true",
+    "inputs": [
+        {
+            "name" : "artifactDirectory",
+            "type" : "string",
+            "label" : "Artifact Directory",
+            "defaultValue" : "$(Build.ArtifactStagingDirectory)",
+            "required" : true,
+            "helpMarkDown" : "Path to the artifact directory to be downloaded."
+        }
+    ],
+	"instanceNameFormat": "GenerateArtifactMetadata",
+	"execution": {
+    "Node": {
+      "target": "main.js",
+      "argumentFormat": ""
+    }
+  },
+    "messages" : {}
+}
+

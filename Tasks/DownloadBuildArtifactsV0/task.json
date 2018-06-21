@@ -155,6 +155,24 @@
       "groupName": "advanced",
       "required": false,
       "helpMarkDown": "Number of files to download simultaneously"
+    },
+    {
+      "name": "enableIncrementalDownload",
+      "type": "boolean",
+      "label": "Enable Incremental Download",
+      "defaultValue": "false",
+      "groupName": "advanced",
+      "required": false,
+      "helpMarkDown": "Enable Incremental Download"
+    },
+    {
+      "name": "cleanTargetDirectory",
+      "type": "boolean",
+      "label": "Clean Target Directory",
+      "defaultValue": "true",
+      "groupName": "advanced",
+      "required": false,
+      "helpMarkDown": "Clean Target Directory"
     }
   ],
   "dataSourceBindings": [
