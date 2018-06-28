@@ -164,15 +164,6 @@
       "groupName": "advanced",
       "required": false,
       "helpMarkDown": "Enable Incremental Download"
-    },
-    {
-      "name": "cleanTargetDirectory",
-      "type": "boolean",
-      "label": "Clean Target Directory",
-      "defaultValue": "true",
-      "groupName": "advanced",
-      "required": false,
-      "helpMarkDown": "Clean Target Directory"
     }
   ],
   "dataSourceBindings": [
