@@ -59,11 +59,12 @@ async function main(): Promise<void> {
         const debugMode: string = tl.getVariable('System.Debug');
         const isVerbose: boolean = debugMode ? debugMode.toLowerCase() != 'false' : false;
         const parallelLimit: number = +tl.getInput("parallelizationLimit", false);
+        var enableIncrementalDownload = tl.getBoolInput("enableIncrementalDownload",false);
         const retryLimit = parseInt(tl.getVariable("VSTS_HTTP_RETRY")) ? parseInt(tl.getVariable("VSTS_HTTP_RETRY")) : 4;
         const itemPattern: string = tl.getInput("itemPattern", false) || '**';
 
         const downloader = new engine.ArtifactEngine();
-        const downloadUrl = tl.getInput("location", true);
+        const downloadUrl = tl.getInput("filesharePath", true);
         let artifactName = tl.getInput("artifactName", true);
         artifactName = artifactName.replace('/', '\\');
         let artifactLocation = path.join(downloadUrl, artifactName);
@@ -77,13 +78,19 @@ async function main(): Promise<void> {
         let downloaderOptions = new engine.ArtifactEngineOptions();
         downloaderOptions.itemPattern = itemPattern;
         downloaderOptions.verbose = isVerbose;
+        downloaderOptions.enableIncrementalDownload = enableIncrementalDownload;
+
+        if(enableIncrementalDownload) {
+                    downloaderOptions.artifactCacheDirectory = tl.getVariable("Agent.WorkFolder");
+                    downloaderOptions.artifactCacheHashKey = "DefaultCollection." + projectId + "." + definitionId + "." + artifactName
+        }
 
         if (parallelLimit) {
             downloaderOptions.parallelProcessingLimit = parallelLimit;
         }
 
         let fileShareProvider = new providers.FilesystemProvider(artifactLocation, artifactName);
-        let fileSystemProvider = new providers.FilesystemProvider(downloadPath);
+        let fileSystemProvider = new providers.FilesystemProvider(downloadPath, artifactName);
 
         let downloadPromise = downloader.processItems(fileShareProvider, fileSystemProvider, downloaderOptions);
 
