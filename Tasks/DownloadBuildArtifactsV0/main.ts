@@ -80,7 +80,6 @@ async function main(): Promise<void> {
         var isVerbose: boolean = debugMode ? debugMode.toLowerCase() != 'false' : false;
         var parallelLimit: number = +tl.getInput("parallelizationLimit", false);
         var enableIncrementalDownload = tl.getBoolInput("enableIncrementalDownload",false);
-        var cleanTargetDirectory = tl.getBoolInput("cleanTargetDirectory",false);
         var retryLimit = parseInt(tl.getVariable("VSTS_HTTP_RETRY")) ? parseInt(tl.getVariable("VSTS_HTTP_RETRY")) : 4;
 
         var templatePath: string = path.join(__dirname, 'vsts.handlebars.txt');
@@ -245,7 +244,7 @@ async function main(): Promise<void> {
                     var variables = {};
                     var handler = new webHandlers.PersonalAccessTokenCredentialHandler(accessToken);
                     var webProvider = new providers.WebProvider(itemsUrl, templatePath, variables, handler, undefined, artifactName);
-                    var fileSystemProvider = new providers.FilesystemProvider(downloadPath, undefined, cleanTargetDirectory);
+                    var fileSystemProvider = new providers.FilesystemProvider(downloadPath, artifactName);
 
                     downloadPromises.push(downloader.processItems(webProvider, fileSystemProvider, downloaderOptions).catch((reason) => {
                         reject(reason);
@@ -263,7 +262,7 @@ async function main(): Promise<void> {
 
                     console.log(tl.loc("DownloadArtifacts", artifact.name, artifactLocation));
                     var fileShareProvider = new providers.FilesystemProvider(artifactLocation, artifactName);
-                    var fileSystemProvider = new providers.FilesystemProvider(downloadPath, undefined, cleanTargetDirectory);
+                    var fileSystemProvider = new providers.FilesystemProvider(downloadPath, artifactName);
 
                     downloadPromises.push(downloader.processItems(fileShareProvider, fileSystemProvider, downloaderOptions).catch((reason) => {
                         reject(reason);
